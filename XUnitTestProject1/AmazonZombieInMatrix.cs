@@ -8,17 +8,20 @@ namespace XUnitTestProject1
 {  
   public class AmazonZombieInMatrix
   {
-    readonly int zombie = 1;
-    readonly int human = 0;
+    enum Element
+    {
+      Zombie = 1,
+      Human = 0
+    }
 
     [Fact]
     public void Test1()
     {
       var grid = new int[4,5] {
-         { human, zombie, zombie, human, zombie },
-         { human, zombie, human, zombie, human},//human=row 1,column 2=>above zombie=row 0, column 2
-         { human, human, human, human, zombie },
-         { human, zombie, human, human, human}
+         { (int)Element.Human, (int)Element.Zombie, (int)Element.Zombie, (int)Element.Human, (int)Element.Zombie },
+         { (int)Element.Human, (int)Element.Zombie, (int)Element.Human, (int)Element.Zombie, (int)Element.Human},//human=row 1,column 2=>above zombie=row 0, column 2
+         { (int)Element.Human, (int)Element.Human, (int)Element.Human, (int)Element.Human, (int)Element.Zombie },
+         { (int)Element.Human, (int)Element.Zombie, (int)Element.Human, (int)Element.Human, (int)Element.Human}
       };
       var rows = grid.GetLength(0);
       var columns = grid.GetLength(1);
@@ -45,7 +48,7 @@ namespace XUnitTestProject1
     public int HoursToInfectAllHumans(int rows, int columns, int[,] grid)
     {
       int timeElapsed = 0;
-      var validElements = new int[] { human, zombie}.Cast<int>();
+      var validElements = new int[] { (int)Element.Human, (int)Element.Zombie }.Cast<int>();
       if(grid.Cast<int>().All(x=> validElements.Contains(x)) ==false)
       {
         return -1;
@@ -58,33 +61,33 @@ namespace XUnitTestProject1
           for (int column = 0; column < columns; column++)
           {
             var item = grid[row, column];
-            if (item == zombie)
+            if (item == (int)Element.Zombie)
             {
               //itemLeft
-              if (column - 1 >= 0 && grid[row, column - 1] == human)
+              if (column - 1 >= 0 && grid[row, column - 1] == (int)Element.Human)
               {
-                grid[row, column - 1] = zombie;
+                grid[row, column - 1] = (int)Element.Zombie;
               }
               //itemRight
-              else if (column + 1 < columns && grid[row, column + 1] == human)
+              else if (column + 1 < columns && grid[row, column + 1] == (int)Element.Human)
               {
-                grid[row, column + 1] = zombie;
+                grid[row, column + 1] = (int)Element.Zombie;
               }
               //itemAbove
-              else if (row - 1 >= 0 && grid[row - 1, column] == human)
+              else if (row - 1 >= 0 && grid[row - 1, column] == (int)Element.Human)
               {
-                grid[row - 1, column] = zombie;
+                grid[row - 1, column] = (int)Element.Zombie;
               }
               //itemBelow
-              else if (row + 1 < rows && grid[row + 1, column] == human)
+              else if (row + 1 < rows && grid[row + 1, column] == (int)Element.Human)
               {
-                grid[row + 1, column] = zombie;
+                grid[row + 1, column] = (int)Element.Zombie;
               }
             }
           }
         }
         timeElapsed += 1;
-        if (grid.Cast<int>().All(x => x==zombie) == true)
+        if (grid.Cast<int>().All(x => x== (int)Element.Zombie) == true)
         {
           break;
         }

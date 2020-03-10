@@ -39,7 +39,7 @@ namespace XUnitTestProject1
                     };
       var result = Get(topToys, toys, quotes);
       var expectedResult = new string[] { "elmo", "elsa" };
-      Assert.True(result.Count()==2);
+      Assert.True(result.Length == 2);
       Assert.True(result.SequenceEqual(expectedResult));
     }
     
@@ -57,7 +57,7 @@ namespace XUnitTestProject1
       Assert.True(result.SequenceEqual(expectedResult));
     }
 
-    public string[] Get(int topToys, string[] toys, string[] quotes)
+    public static string[] Get(int topToys, string[] toys, string[] quotes)
     {
       var dictionaryResult = new Dictionary<string, int>();
       foreach(var toy in toys)
