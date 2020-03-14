@@ -5,7 +5,7 @@ using Xunit;
 
 namespace XUnitTestProject1
 {  
-  public class SearchSuggestionsSystem
+  public class SearchSuggestionsSystemAmazon
   {
     [Fact]
     public void Test1()
@@ -66,13 +66,13 @@ namespace XUnitTestProject1
     {
       var output = new List<List<string>>
       {
-        new List<string> { ""},
-        new List<string> { "" },
-        new List<string> { "" },
-        new List<string> { "" },
-        new List<string> { "" },
-        new List<string> { "" },
-        new List<string> { "" }
+        new List<string>(),
+        new List<string>(),
+        new List<string>(),
+        new List<string>(),
+        new List<string>(),
+        new List<string>(),
+        new List<string>()
       };
       var result=SuggestedProducts(new[] { "havana" }, "tatiana");
       for (int counter = 0; counter < output.Count; counter++)
@@ -97,15 +97,8 @@ namespace XUnitTestProject1
       for (var counter = 0; counter < searchWord.Length; counter++)
       {
         var searchString = searchWord.Substring(0,counter+1);
-        var partialList = orderedProducts.Where(x => x.StartsWith(searchString, StringComparison.InvariantCultureIgnoreCase));
-        if (partialList.Any())
-        {
-          result.Add(partialList.Take(3).ToList());
-        }
-        else
-        {
-          result.Add(new List<string> {""});
-        }
+        var partialList = orderedProducts.Where(x => x.StartsWith(searchString, StringComparison.InvariantCultureIgnoreCase)).Take(3).ToList();
+        result.Add(partialList);
       }
       return result;
     }
