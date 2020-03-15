@@ -6,7 +6,7 @@ using Xunit;
 
 namespace XUnitTestProject1
 {  
-  public class AmazonZombieInMatrix
+  public class ZombieInMatrix_Amazon
   {
     enum Element
     {

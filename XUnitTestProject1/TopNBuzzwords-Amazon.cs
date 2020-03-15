@@ -6,7 +6,7 @@ using Xunit;
 
 namespace XUnitTestProject1
 {  
-  public class AmazonTopNBuzzwords
+  public class TopNBuzzwords_Amazon
   {
     [Fact]
     public void Return_a_list_of_strings_of_the_most_popular_N_toys_in_order_of_most_to_least_frequentlycmentioned()

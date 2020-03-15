@@ -45,24 +45,24 @@ namespace XUnitTestProject1
       {
         for (var counter2 = counter1; counter2 < items.Length; counter2++)
         {
-          if(counter1==counter2)
+          if (counter1 == counter2)
           {
             continue;
           }
-          if((items[counter1] + items[counter2]) == target-30)
+          if ((items[counter1] + items[counter2]) == target - 30)
           {
-            if(largestNumber == -1 || 
+            if (largestNumber == -1 ||
               largestNumber > items[counter1] || largestNumber > items[counter2]
               )
             {
               number1Index = counter1;
               number2Index = counter2;
-              largestNumber = items[counter1] > items[counter2]? items[counter1]: items[counter2];
+              largestNumber = items[counter1] > items[counter2] ? items[counter1] : items[counter2];
             }
           }
         }
       }
-      return (number1Index == -1 || number2Index==-1)? null : new[] { number1Index, number2Index };      
+      return (number1Index == -1 || number2Index == -1) ? null : new[] { number1Index, number2Index };
     }
   }
 }
