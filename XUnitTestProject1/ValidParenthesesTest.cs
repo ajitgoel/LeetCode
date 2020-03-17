@@ -1,37 +1,46 @@
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using Xunit;
 
 namespace XUnitTestProject1
 {  
   public class ValidParentheses
   {
-    //[Fact]
-    //public void ValidParenthesesTest()
-    //{
-    //  Assert.Equal(true, IsValid("()"));
-    //  Assert.Equal(true, IsValid("()[]{}"));
-    //  Assert.Equal(false, IsValid("(]"));
-    //  Assert.Equal(false, IsValid("([)]"));
-    //  Assert.Equal(true, IsValid("{[]}"));
-    //}
-    //public bool IsValid(string s)
-    //{
-    //  if(string.IsNullOrWhiteSpace(s))
-    //  {
-    //    return true;
-    //  }
-    //  var validOpeningBraces = new char['(', '{', '['];
-    //  var validClosingBraces = new char[')', '}', ']'];
-    //  var currentCharacter=s.validClosingBraces.
-    //  while()
-    //  {
-
-    //  }
-    //  return true;
-    //}
+    [Fact]
+    public void ValidParenthesesTest()
+    {
+      Assert.True(IsValid("()"));
+      Assert.True(IsValid("()[]{}"));
+      Assert.False(IsValid("(]"));
+      Assert.False(IsValid("([)]"));
+      Assert.True(IsValid("{[]}"));
+    }
+    public bool IsValid(string input)
+    {
+      if (string.IsNullOrWhiteSpace(input))
+      {
+        return true;
+      }
+      var stack = new Stack<char>();
+      foreach (char character in input)
+      {
+        if (character.Equals('(') || character.Equals('[') || character.Equals('{'))
+        {
+          stack.Push(character);
+        }
+        else if (character.Equals(')') && (stack.Count <= 0 || stack.Pop() != '('))
+        {
+          return false;
+        }
+        else if (character.Equals(']') && (stack.Count <= 0 || stack.Pop() != '['))
+        {
+          return false;
+        }
+        else if (character.Equals('}') && (stack.Count <= 0 || stack.Pop() != '{'))
+        {
+          return false;
+        }
+      }
+      return stack.Count <= 0;
+    }
   }
 }

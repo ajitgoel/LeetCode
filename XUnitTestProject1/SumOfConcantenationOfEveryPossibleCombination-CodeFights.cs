@@ -4,13 +4,13 @@ using Xunit;
 
 namespace XUnitTestProject1
 {  
-  public class SumOfConcantenationOfEveryPossibleCombination
+  public class SumOfConcantenationOfEveryPossibleCombination_CodeFights
   {
     [Fact]
     public void Test1()
     {
       var output = 1344;
-      var result = ConcatenationsSum(new[] {10,2 });
+      var result = ConcatenationsSum(new[] {10,2});
       Assert.Equal(output, result);
     }
 
@@ -28,11 +28,11 @@ namespace XUnitTestProject1
     {
       if(items ==  null || items.Length==0 ||items.Length > 106)
       {
-        throw new Exception("invalid input paramter: items");
+        throw new Exception("invalid input parameter: items");
       }
       if (items.Any(x => x<=0) || items.Any(x => x > 106))
       {
-        throw new Exception("Invalid input paramter: items");
+        throw new Exception("Invalid input parameter: items");
       }
       if (items.Sum(x => x) >= 253)
       {
