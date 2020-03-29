@@ -8,11 +8,11 @@ namespace XUnitTestProject1
     [Fact]
     public void ValidParenthesesTest()
     {
-      Assert.True(IsValid("()"));
-      Assert.True(IsValid("()[]{}"));
-      Assert.False(IsValid("(]"));
-      Assert.False(IsValid("([)]"));
-      Assert.True(IsValid("{[]}"));
+      Assert.Equal(true,IsValid("()"));
+      Assert.Equal(true, IsValid("()[]{}"));
+      Assert.Equal(false, IsValid("(]"));
+      Assert.Equal(false, IsValid("([)]"));
+      Assert.Equal(true, IsValid("{[]}"));
     }
     public bool IsValid(string input)
     {
@@ -27,17 +27,35 @@ namespace XUnitTestProject1
         {
           stack.Push(character);
         }
-        else if (character.Equals(')') && (stack.Count <= 0 || stack.Pop() != '('))
+        else if (character.Equals(')'))
         {
-          return false;
+          if(stack.Count > 0 && stack.Pop() == '(')
+          {
+          }
+          else
+          {
+            return false;
+          }
         }
-        else if (character.Equals(']') && (stack.Count <= 0 || stack.Pop() != '['))
+        else if (character.Equals(']'))
         {
-          return false;
+          if (stack.Count > 0 && stack.Pop() == '[')
+          {
+          }
+          else
+          {
+            return false;
+          }
         }
-        else if (character.Equals('}') && (stack.Count <= 0 || stack.Pop() != '{'))
+        else if (character.Equals('}'))
         {
-          return false;
+          if (stack.Count > 0 && stack.Pop() == '{')
+          {
+          }
+          else
+          {
+            return false;
+          }
         }
       }
       return stack.Count <= 0;
