@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Xunit;
 
 namespace XUnitTestProject1
@@ -17,7 +16,9 @@ namespace XUnitTestProject1
       {
         return 0;
       }
-      return (input % 10) + Get(input / 10);
+      var remainder=input % 10;
+      var quotient = Get(input / 10);
+      return remainder + quotient;
     }
   }
 }

@@ -23,7 +23,7 @@ namespace XUnitTestProject1
     }
 
     [Fact]
-    public void Tes3()
+    public void Test3()
     {
       var output = new[] {0, 1};
       var result = PairWithGivenSum(new[] { 0,0}, 30);
@@ -34,30 +34,31 @@ namespace XUnitTestProject1
     Conditions:
     You will pick exactly 2 numbers.
     You cannot pick the same element twice.
-    If you have muliple pairs, select the pair with the largest number.*/
+    If you have multiple pairs, select the pair with the largest number.*/
     public int[] PairWithGivenSum(int[] items, int target)
     {
+      if(items?.Length==0)
+      {
+        return null;
+      }
+
       int largestNumber = -1;
       int number1Index = -1;
       int number2Index = -1;
 
-      for (var counter1 = 0; counter1 < items.Length; counter1++)
+      for (var outerCounter = 0; outerCounter < items.Length-1; outerCounter++)
       {
-        for (var counter2 = counter1; counter2 < items.Length; counter2++)
+        for (var innerCounter = outerCounter+1; innerCounter < items.Length; innerCounter++)
         {
-          if (counter1 == counter2)
-          {
-            continue;
-          }
-          if ((items[counter1] + items[counter2]) == target - 30)
+          if ((items[outerCounter] + items[innerCounter]) == target - 30)
           {
             if (largestNumber == -1 ||
-              largestNumber > items[counter1] || largestNumber > items[counter2]
+              largestNumber > items[outerCounter] || largestNumber > items[innerCounter]
               )
             {
-              number1Index = counter1;
-              number2Index = counter2;
-              largestNumber = items[counter1] > items[counter2] ? items[counter1] : items[counter2];
+              number1Index = outerCounter;
+              number2Index = innerCounter;
+              largestNumber = items[outerCounter] > items[innerCounter] ? items[outerCounter] : items[innerCounter];
             }
           }
         }
