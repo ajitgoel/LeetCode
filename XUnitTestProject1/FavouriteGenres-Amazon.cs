@@ -29,7 +29,8 @@ namespace XUnitTestProject1
         { "Emma", new List<string> { "Pop" } }
       };
       var result = Get(userSongs, genreSongs);
-      Assert.True(output.OrderBy(x=>x.Key).SequenceEqual(result.OrderBy(x=>x.Key)));
+      Assert.True(output["David"].SequenceEqual(result["David"]));
+      Assert.True(output["Emma"].SequenceEqual(result["Emma"]));
     }
     [Fact]
     public void Test2()
@@ -46,7 +47,8 @@ namespace XUnitTestProject1
         { "Emma", new List<string> {} }
       };
       var result = Get(userSongs, songGenres);
-      Assert.True(output.OrderBy(x => x.Key).SequenceEqual(result.OrderBy(x => x.Key)));
+      Assert.True(output["David"].SequenceEqual(result["David"]));
+      Assert.True(output["Emma"].SequenceEqual(result["Emma"]));
     }
 
     /*Given a map Map<String, List<String>> userSongs with user names as keys and a list of all the songs that the user has listened to as values.
@@ -93,10 +95,28 @@ namespace XUnitTestProject1
       {
         var user = userSong.Key;
         var userSongsTemp=userSong.Value;
+        var userGenresCount = new Dictionary<string, int>();
+        int maxCountForGenre = 0;
         foreach (var userSongTemp in userSongsTemp)
         {
           var genre = songGenres[userSongTemp];
-          result[user].Add(genre);
+          if (userGenresCount.ContainsKey(genre) == false)
+          {
+            userGenresCount.Add(genre, 1);
+          }
+          else
+          {
+            userGenresCount[genre]++;
+            maxCountForGenre = Math.Max(maxCountForGenre, userGenresCount[genre]);
+          }
+        }
+
+        foreach (var userGenreCount in userGenresCount)
+        {
+          if (userGenreCount.Value == maxCountForGenre)
+          {
+            result[user].Add(userGenreCount.Key);
+          }
         }
       }
       return result;
