@@ -7,7 +7,7 @@ using Xunit;
 
 namespace XUnitTestProject1
 {
-  public class ReorderDatainLogFiles_Amazon
+  public class ReorderDataInLogFiles_Amazon
   {
     [Fact]
     public void Test1()

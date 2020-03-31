@@ -4,7 +4,7 @@ using Xunit;
 
 namespace XUnitTestProject1
 {
-  public class SmallestPositiveIntegerThatDoesNotoccurInArray
+  public class SmallestPositiveIntegerThatDoesNotOccurInArray
   {
     [Fact]
     public void Test1()
