@@ -7,9 +7,52 @@ namespace XUnitTestProject1
     [Fact]
     public void Test()
     {
-      Assert.Equal(true, Get(636));
+      Assert.True(Get(636));
+      Assert.True(GetUsingPointers("abcba"));
+      Assert.False(GetUsingPointers("abcde"));
+      Assert.True(GetUsingRecursion("abcba"));
+      Assert.False(GetUsingRecursion("abcde"));
+      Assert.True(GetUsingRecursion("abccba"));
     }
-    public bool Get(int input)
+    //O(N): time complexity, O(N): space complexity
+    public static bool GetUsingRecursion(string input, int pointer=0)
+    {
+      if (string.IsNullOrEmpty(input) == true)
+      {
+        return false;
+      }
+      var left = pointer;
+      var right = input.Length - pointer-1;
+      if(left<right)
+      {
+        if (input[left] != input[right])
+          return false;
+        else
+          return GetUsingRecursion(input, left + 1);
+      }
+      return true;
+    }
+    //O(N): time complexity, O(1): space complexity
+    public static bool GetUsingPointers(string input)
+    {
+      if(string.IsNullOrEmpty(input)==true)
+      {
+        return false;
+      }
+      var left = 0;
+      var right = input.Length - 1;
+      while (left<right)
+      {
+        if(input[left]!=input[right])
+        {
+          return false;
+        }
+        left++;
+        right--;
+      }
+      return true;
+    }
+    public static bool Get(int input)
     {
       int invertedInput=0;
       int remainder;
@@ -18,7 +61,7 @@ namespace XUnitTestProject1
       {
         remainder = tempInput % 10;
         invertedInput = (invertedInput * 10) + remainder;
-        tempInput = tempInput / 10;
+        tempInput /= 10;
       }
       return (input == invertedInput);
       /*
