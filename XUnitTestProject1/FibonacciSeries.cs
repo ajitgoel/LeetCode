@@ -1,4 +1,6 @@
 using Xunit;
+using System.Linq;
+using System;
 
 namespace XUnitTestProject1
 {  
@@ -16,19 +18,21 @@ namespace XUnitTestProject1
       Assert.Equal(8, Get(6));
       Assert.Equal(13, Get(7));
     }
+    List<int> cache=new List<int>();
     /*The next number is found by adding up the two numbers before it.
     * 0, 1, 1, 2, 3, 5, 8, 13, 21, 34*/
     public int Get(int input)
     {
-      if(input==0)
+      if(Array.Exists(arraycache,x=>x.Equals(input)))
       {
-        return 0;
+        return input;
       }
-      if (input == 1)
+      if(input==0  || input == 1)
       {
-        return 1;
+        return input;
       }
-      return Get(input-1) + Get(input-2);      
+      var output= Get(input-1) + Get(input-2);
+      cache.add
     }
   }
 }
