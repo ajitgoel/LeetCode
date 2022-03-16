@@ -2,55 +2,39 @@ using System.Collections.Generic;
 using Xunit;
 
 namespace XUnitTestProject1
-{  
+{
   public class ValidParentheses
   {
     [Fact]
     public void ValidParenthesesTest()
     {
-      Assert.Equal(true,IsValid("()"));
-      Assert.Equal(true, IsValid("()[]{}"));
-      Assert.Equal(false, IsValid("(]"));
-      Assert.Equal(false, IsValid("([)]"));
-      Assert.Equal(true, IsValid("{[]}"));
+      Assert.True(IsValid("()"));
+      Assert.True(IsValid("()[]{}"));
+      Assert.False(IsValid("(]"));
+      Assert.False(IsValid("([)]"));
+      Assert.True(IsValid("{[]}"));
     }
-    public bool IsValid(string input)
+    public static bool IsValid(string input)
     {
-      if (string.IsNullOrWhiteSpace(input))
-      {
-        return true;
-      }
+      var openingbrackets = "[{(";
+      var closingbrackets = "}])";
+      var dictionary = new Dictionary<char, char>() { { ']', '[' }, { '}', '{' }, { ')', '(' } };
       var stack = new Stack<char>();
-      foreach (char character in input)
+      foreach (char counter in input)
       {
-        if (character.Equals('(') || character.Equals('[') || character.Equals('{'))
+        if (openingbrackets.Contains(counter))
         {
-          stack.Push(character);
+          stack.Push(counter);
         }
-        else if (character.Equals(')'))
+        else if (closingbrackets.Contains(counter))
         {
-          if(stack.Count > 0 && stack.Pop() == '(')
-          {
-          }
-          else
+          if (stack.Count == 0)
           {
             return false;
           }
-        }
-        else if (character.Equals(']'))
-        {
-          if (stack.Count > 0 && stack.Pop() == '[')
+          if (stack.Peek() == dictionary[counter])
           {
-          }
-          else
-          {
-            return false;
-          }
-        }
-        else if (character.Equals('}'))
-        {
-          if (stack.Count > 0 && stack.Pop() == '{')
-          {
+            stack.Pop();
           }
           else
           {
@@ -58,7 +42,7 @@ namespace XUnitTestProject1
           }
         }
       }
-      return stack.Count <= 0;
+      return stack.Count == 0;
     }
   }
 }
