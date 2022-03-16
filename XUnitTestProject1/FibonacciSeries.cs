@@ -20,13 +20,9 @@ namespace XUnitTestProject1
     * 0, 1, 1, 2, 3, 5, 8, 13, 21, 34*/
     public int Get(int input)
     {
-      if(input==0)
+      if(input==0 || input == 1)
       {
-        return 0;
-      }
-      if (input == 1)
-      {
-        return 1;
+        return input;
       }
       return Get(input-1) + Get(input-2);      
     }

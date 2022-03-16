@@ -9,8 +9,8 @@ namespace XUnitTestProject1
     [Fact]
     public void Test1()
     {
-      //var result1=solution(new int[] { 1, 3, 6, 4, 1, 2 });
-      //Assert.Equal(5, result1);
+      var result1=solution(new int[] { 1, 3, 6, 4, 1, 2 });
+      Assert.Equal(5, result1);
       var result2 = solution(new int[] { 1, 2, 3 });
       Assert.Equal(4, result2);
       var result3=solution(new int[] { -1, -3 });
@@ -50,7 +50,7 @@ namespace XUnitTestProject1
           }
         }
       }while(currentResult<1);
-      return max;
+      return max+1;
     }
   }
 }

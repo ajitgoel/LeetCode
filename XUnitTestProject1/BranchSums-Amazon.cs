@@ -1,6 +1,7 @@
 ﻿using Xunit;
 using FluentAssertions;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace XUnitTestProject1
 {
@@ -42,11 +43,11 @@ namespace XUnitTestProject1
     //O(N): Time complexity, O(N): Space Complexity
     public int[] GetBranchSums(Node<int> input)
     {
-      int[] result = System.Array.Empty<int>();
-      CalculateBranchSums(input, 0, ref result);
-      return result;
+      var result = new List<int>();
+      CalculateBranchSums(input, 0, result);
+      return result.ToArray();
     }
-    void CalculateBranchSums(Node<int> input, int runningSum, ref int[] sums)
+    void CalculateBranchSums(Node<int> input, int runningSum, List<int> sums)
     {
       if (input == null)
       {  
@@ -55,11 +56,11 @@ namespace XUnitTestProject1
       var newRunningSum=runningSum+input.Data;
       if(input.Left==null && input.Right==null)
       {
-        sums=sums.Append(newRunningSum).ToArray();
+        sums.Add(newRunningSum);
         return;
       }
-      CalculateBranchSums(input.Left, newRunningSum,ref sums);
-      CalculateBranchSums(input.Right, newRunningSum, ref sums);
+      CalculateBranchSums(input.Left, newRunningSum,sums);
+      CalculateBranchSums(input.Right, newRunningSum, sums);
     }
   }
 }
