@@ -1,11 +1,53 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using Xunit;
 
 namespace XUnitTestProject1.CapitalOne
-{  
+{
+  public class Stairs
+  {
+    [Fact]
+    public void Test()
+    {
+      string str = String.Empty;
+      PrintAllWays(5, str);
+    }
+    void PrintAllWays(int n, string str)
+    {
+      string str1 = str;
+      StringBuilder sb = new StringBuilder(str1);
+      if (n == 0)
+      {
+        Debug.WriteLine(str1);
+        return;
+      }
+      if (n >= 1)
+      {
+        sb = new StringBuilder(str1);
+        PrintAllWays(n - 1, sb.Append('1').ToString());
+      }
+      if (n >= 2)
+      {
+        sb = new StringBuilder(str1);
+        PrintAllWays(n - 2, sb.Append('2').ToString());
+      }
+    }
+    //public List<int[]> Calculate(int noOfStairs, int maximumNoOfSteps)
+    //{
+    //  for (int counter1=0;counter1<noOfStairs; counter1++)
+    //  {
+    //    for (int counter2 = 0; counter2 < maximumNoOfSteps; counter2++)
+    //    {
+
+    //    }
+    //  }
+
+    //}
+  }
   public class SubArrayWhoseSumIsClosestToValue
   {
     [Fact]
