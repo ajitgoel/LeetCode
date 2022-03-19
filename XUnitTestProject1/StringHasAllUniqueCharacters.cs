@@ -7,9 +7,9 @@ namespace XUnitTestProject1
     [Fact]
     public void Test()
     {
-      Assert.Equal(false, Get("aa"));
-      Assert.Equal(false, Get("champa"));
-      Assert.Equal(true, Get("abcdefghijklmnopqrstuvwxyz"));
+      Assert.False(Get("aa"));
+      Assert.False(Get("champa"));
+      Assert.True(Get("abcdefghijklmnopqrstuvwxyz"));
     }
     public bool Get(string input)
     {
