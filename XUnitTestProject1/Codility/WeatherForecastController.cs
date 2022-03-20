@@ -24,8 +24,7 @@ namespace WebApi.Tests
       {
         return new UnauthorizedResult();
       }
-      Func<Store, bool> filter = it => null;//Dzmitry, how will I pass a Func to the GetStores repository call?
-      var stores = _repository.GetStores(filter);
+      var stores = _repository.GetStores(x => x.StoreId == -1);
       return new OkObjectResult(stores);
     }
     // Return UnauthorizedResult(), NotFoundResult(), ForbidResult() or OkObjectResult(Store)
@@ -37,8 +36,7 @@ namespace WebApi.Tests
       {
         return new UnauthorizedResult();
       }
-      Func<Store, bool> filter = it => it.StoreId= storeId;//Dzmitry, how will I pass a Func to the GetStores repository call?
-      var stores = _repository.GetStores(filter, includeCustomers);
+      var stores = _repository.GetStores(x=>x.StoreId==storeId, includeCustomers);
       if (!stores.All(x => x.CountryCode == countryCode))
       {
         return new ForbidResult();
