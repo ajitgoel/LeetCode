@@ -1,6 +1,7 @@
 using FluentAssertions;
 using System;
 using Xunit;
+using System.Linq;
 
 namespace XUnitTestProject1
 {
