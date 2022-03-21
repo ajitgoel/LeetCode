@@ -7,11 +7,11 @@ namespace XUnitTestProject1
 {
   public class Node<T>
   {
-    public Node(T data)
+    public Node(T value)
     {
-      Data = data;
+      Value = value;
     }
-    public T Data { get; }
+    public T Value { get; }
     public Node<T> Left { get; set; }
     public Node<T> Right { get; set; }
   }
@@ -53,7 +53,7 @@ namespace XUnitTestProject1
       {  
         return;
       }
-      var newRunningSum=runningSum+input.Data;
+      var newRunningSum=runningSum+input.Value;
       if(input.Left==null && input.Right==null)
       {
         sums.Add(newRunningSum);
