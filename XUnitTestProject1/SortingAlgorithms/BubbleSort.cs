@@ -9,7 +9,7 @@ namespace XUnitTestProject1.SortingAlgorithms
     {
       var array=new int[] { 50, 40, 30, 20, 10 };
       Apply(array);
-      Assert.Equal(array[0], 10);
+      Assert.Equal(10, array[0]);
       Assert.Equal(array[1], 20);
       Assert.Equal(array[2], 30);
       Assert.Equal(array[3], 40);

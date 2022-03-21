@@ -7,12 +7,12 @@ using Microsoft.Extensions.Primitives;
 
 namespace WebApi.Tests
 {
-  public class ApiController : Controller
+  public class StoresApiController : Controller
   {
     public const string CountryCodeHeaderName = "x-test-country-code";
     private readonly IRepository _repository;
     private StringValues headervalues;
-    public ApiController(IRepository repository)
+    public StoresApiController(IRepository repository)
     {
       _repository = repository;
     }
@@ -27,7 +27,6 @@ namespace WebApi.Tests
       var stores = _repository.GetStores(x => x.StoreId == -1);
       return new OkObjectResult(stores);
     }
-    // Return UnauthorizedResult(), NotFoundResult(), ForbidResult() or OkObjectResult(Store)
     public IActionResult GetStore(int storeId, bool includeCustomers = false)
     {
       Request.Headers.TryGetValue(CountryCodeHeaderName, out headervalues);
@@ -41,14 +40,13 @@ namespace WebApi.Tests
       {
         return new ForbidResult();
       }
-      var store = stores.Where(x => x.StoreId == storeId).FirstOrDefault();
+      var store = stores.FirstOrDefault();
       if (stores?.Count() == 0 || store == null)
       {
         return new NotFoundResult();
       }
       return new OkObjectResult(store);
     }
-    // Return UnauthorizedResult(), BadRequestResult() or OkObjectResult(Customer)
     public IActionResult CreateCustomer(Customer customer)
     {
       Request.Headers.TryGetValue(CountryCodeHeaderName, out headervalues);

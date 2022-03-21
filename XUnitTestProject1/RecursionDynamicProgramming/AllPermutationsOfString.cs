@@ -42,14 +42,11 @@ namespace XUnitTestProject1.RecursionDynamicProgramming
       }
       for (int i = startindex; i <= endindex; i++)
       {
-        //https://www.youtube.com/watch?v=GuTPwotSdYw
-        //swapping the elements before getting the permutations
-        (elements[startindex], elements[i]) = 
-          (elements[i], elements[startindex]);
+        //https://www.youtube.com/watch?v=GuTPwotSdYw, swapping the elements before getting the permutations
+        (elements[startindex], elements[i]) = (elements[i], elements[startindex]);
         GetPermutations(elements, startindex + 1, endindex);
         //backtracking the swapped elements so we can get the remaining permutations
-        (elements[startindex], elements[i]) = 
-        (elements[i], elements[startindex]);
+        (elements[startindex], elements[i]) = (elements[i], elements[startindex]);
       }
     }
   }
