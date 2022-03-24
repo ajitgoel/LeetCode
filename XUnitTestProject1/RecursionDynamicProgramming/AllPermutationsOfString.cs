@@ -1,10 +1,9 @@
-using System.Linq;
 using Xunit;
 using FluentAssertions;
 using System.Collections.Generic;
 
 namespace XUnitTestProject1.RecursionDynamicProgramming
-{  
+{
   public class AllPermutationsOfString
   {
     [Fact]
