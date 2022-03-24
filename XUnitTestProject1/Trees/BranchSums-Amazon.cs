@@ -41,6 +41,11 @@ namespace XUnitTestProject1
       result.Should().Contain(11);
     }
     //O(N): Time complexity, O(N): Space Complexity
+    /*              1
+     *          2       3
+     *      4     5   6   7
+     *     8  9 10
+     */ 
     public int[] GetBranchSums(Node<int> input)
     {
       var result = new List<int>();
