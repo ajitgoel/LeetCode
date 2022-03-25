@@ -30,22 +30,38 @@ namespace XUnitTestProject1
     public string[,] Generate(int arraylength)
     {
       var result = new string[arraylength, arraylength];
-      var colors = new char[3] { 'R', 'B', 'G' };
+      var colors = new char[] { 'R', 'B', 'G' };
       var initialvalue = new Random().Next(colors.Length);
       var colorelement = initialvalue;
       for (int outer = 0; outer < arraylength; outer++)
       {
         for (int inner = 0; inner < arraylength; inner++)
         {
-          result[outer, inner] = colors[colorelement].ToString();
-          colorelement++;
-          if (arraylength == colors.Length)
+          if((inner -1 >0 && result[outer, inner] !=null && result[outer, inner - 1] != null && 
+            result[outer, inner] == result[outer, inner-1]) ||
+            (inner + 1 < arraylength && result[outer, inner] != null && result[outer, inner + 1] !=null && 
+              result[outer, inner] == result[outer, inner+1]) ||
+            (outer + 1 < arraylength && result[outer, inner] != null && result[outer + 1, inner] != null && 
+              result[outer, inner] == result[outer+1, inner] ||
+            (outer- 1 > 0 && result[outer, inner] !=null && result[outer - 1, inner] != null &&
+              result[outer, inner] == result[outer-1, inner]))
+          )
           {
             colorelement++;
+            if (colorelement >= colors.Length)
+            {
+              colorelement = 0;
+            }
+            result[outer, inner] = colors[colorelement].ToString();
           }
-          if (colorelement>=colors.Length)
+          else
           {
-            colorelement = initialvalue;
+            result[outer, inner] = colors[colorelement].ToString();
+            colorelement++;
+            if (colorelement >= colors.Length)
+            {
+              colorelement = 0;
+            }
           }
         }
       }
