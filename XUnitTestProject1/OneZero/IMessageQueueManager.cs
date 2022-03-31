@@ -81,22 +81,18 @@ namespace MessageQueue
 	};
 	public class MessageQueueManager : IMessageQueueManager
 	{
-		private readonly object queuesSubscribersLock = new object();
-		private readonly object queueMessagesLock = new object();
 		Dictionary<string, HashSet<Tuple<int, long>>> queuesSubscribers;
 		Dictionary<string, HashSet<Tuple<string, long>>> queueMessages;
+		int subscriptionHandleId;
 		public MessageQueueManager()
 		{
 			queuesSubscribers = new Dictionary<string, HashSet<Tuple<int, long>>>();
 			queueMessages = new Dictionary<string, HashSet<Tuple<string, long>>>();
+			subscriptionHandleId = int.MinValue;
 		}
 		private bool DoesQueueExist(string in_queueName)
 		{
-			if (queuesSubscribers.Where(x => x.Key == in_queueName).Count()>0)
-			{
-				return true;
-			}
-			return false;
+			return queuesSubscribers.ContainsKey(in_queueName);
 		}		
 		public bool CreateMessageQueue(string in_queueName)
 		{
@@ -107,11 +103,8 @@ namespace MessageQueue
 				{
 					return false;
 				}
-				lock (queuesSubscribersLock)
-				{
-					queuesSubscribers.Add(in_queueName, new HashSet<Tuple<int, long>>());
-					return true;
-				}
+				queuesSubscribers.Add(in_queueName, new HashSet<Tuple<int, long>>());
+				return true;
 			}
 			catch (Exception exception)
 			{
@@ -132,32 +125,29 @@ namespace MessageQueue
 					return false;
 				}
 				//If a message is posted to a queue that has no subscribers, that message is discarded.
-				var queue = queuesSubscribers.Where(y => y.Key== in_queueName).FirstOrDefault();
-				if (queue.Value.Count()==0)
+				var doesASubscriberExistForQueue = queuesSubscribers[in_queueName].Any();
+				if (!doesASubscriberExistForQueue)
 				{
 					//I am assuming that we would like to return false if there are no subscribers
 					return false;
 				}
 
 				// - Messages should be stored internally until all subscribers have received them via a GetNextMessage call.
-				lock (queueMessagesLock)
+				var messageCreateDateTime = ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeMilliseconds();
+				var tuple = new Tuple<string, long>(in_message, messageCreateDateTime);
+				if (queueMessages.ContainsKey(in_queueName) == false)
 				{
-					var messageCreateDateTime = ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeMilliseconds();
-					var tuple = new Tuple<string, long>(in_message, messageCreateDateTime);
-					if (queueMessages.ContainsKey(in_queueName) == false)
-					{
-						var hashset = new HashSet<Tuple<string, long>>
-					{
-						tuple
-					};
-						queueMessages.Add(in_queueName, hashset);
-					}
-					else
-					{
-						queueMessages[in_queueName].Add(tuple);
-					}
-					return true;
+					var hashset = new HashSet<Tuple<string, long>>
+				{
+					tuple
+				};
+					queueMessages.Add(in_queueName, hashset);
 				}
+				else
+				{
+					queueMessages[in_queueName].Add(tuple);
+				}
+				return true;
 			}
 			catch (Exception exception)
 			{
@@ -174,15 +164,12 @@ namespace MessageQueue
 					out_handle = default;
 					return false;
 				}
-				lock (queuesSubscribersLock)
-				{
-					var subscriptionHandleId = new Random().Next(int.MinValue, int.MaxValue);
-					out_handle = new SubscriptionHandle(subscriptionHandleId);
-					var subscriptionCreateDateTime = ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeMilliseconds();
-					var tuple = new Tuple<int, long>(out_handle.GetHashCode(), subscriptionCreateDateTime);
-					queuesSubscribers[in_queueName].Add(tuple);
-					return true;
-				}
+				out_handle = new SubscriptionHandle(subscriptionHandleId);
+				subscriptionHandleId++;
+				var subscriptionCreateDateTime = ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeMilliseconds();
+				var tuple = new Tuple<int, long>(out_handle.GetHashCode(), subscriptionCreateDateTime);
+				queuesSubscribers[in_queueName].Add(tuple);
+				return true;
 			}
 			catch (Exception exception)
 			{
@@ -199,7 +186,7 @@ namespace MessageQueue
 					out_queueSubscriberCount = default;
 					return false;
 				}
-				out_queueSubscriberCount = queuesSubscribers.Where(x => x.Key == in_queueName).Select(x => x.Value).Count();
+				out_queueSubscriberCount = queuesSubscribers[in_queueName].Count();
 				return true;
 			}
 			catch (Exception exception)
@@ -216,6 +203,11 @@ namespace MessageQueue
 		{
 			try
 			{
+				if(in_handle==default)
+        {
+					out_message = "";
+					return false;
+				}
 				var subscriptionHandleKey=in_handle.GetHashCode();
 				//Get queueName from queuesSubscribers
 				var queue = queuesSubscribers.Where(y => y.Value.Select(x=>x.Item1).Contains(subscriptionHandleKey)).FirstOrDefault();
@@ -229,15 +221,12 @@ namespace MessageQueue
 					if (queueMessageForSubscriber!=null)
           {
 						out_message = queueMessageForSubscriber.Item1;
-						lock (queuesSubscribersLock)
-						{
-							//update queuesSubscribers to the next datetime
-							var nextMessageDateTime = queueMessageForSubscriber.Item2;
-							var tuple = new Tuple<int, long>(subscriptionHandleKey, nextMessageDateTime);
-							queuesSubscribers[queueName].RemoveWhere(x=>x.Item1== subscriptionHandleKey);
-							queuesSubscribers[queueName].Add(tuple);
-							return true;
-						}
+						//update queuesSubscribers to the next datetime
+						var nextMessageDateTime = queueMessageForSubscriber.Item2;
+						var tuple = new Tuple<int, long>(subscriptionHandleKey, nextMessageDateTime);
+						queuesSubscribers[queueName].RemoveWhere(x=>x.Item1== subscriptionHandleKey);
+						queuesSubscribers[queueName].Add(tuple);
+						return true;
 					}
 					else
           {
