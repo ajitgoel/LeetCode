@@ -8,7 +8,7 @@ public class MessageQueueUnitTest
 	public void Test1()
 	{
 		// Instantiate your message queue manager here
-		var messageQueueManager = new MessageQueueManager();
+		var messageQueueManager = new MessageQueueManager2();
 		var queueName = "queueName1";
 		var queueNameThatDoesNotExist = "queueNameThatDoesNotExist";
 		var message1 = "Message1";

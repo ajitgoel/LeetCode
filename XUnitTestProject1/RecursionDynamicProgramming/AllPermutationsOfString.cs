@@ -1,9 +1,73 @@
 using Xunit;
 using FluentAssertions;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace XUnitTestProject1.RecursionDynamicProgramming
 {
+  public class Maze
+  {
+    [Fact]
+    public void Test()
+    {
+      var result2 = GetPermutations(
+        new long[3][] 
+        { 
+          new long[3]{ 0, 0, 1 },
+          new long[3]{ 1, 0, 0},
+          new long[3]{ 1, 1, 0 }
+        }, 3);
+    }
+
+    private bool GetPermutations(long[][] maze, long n)
+    {
+      return false;
+      for (var outer=0; outer< maze.Length;outer++)
+      {
+        for (var inner= 0; inner< maze[outer].Length; inner++)
+        {
+
+        }
+      }
+    }
+  }
+
+  public class ArrayWhichoccursLeastNumberOfTimes
+  {
+    [Fact]
+    public void Test()
+    {
+      var result2 = GetPermutations(new long[] { 10,941, 13,13,13,941});
+      var result1 = GetPermutations(new long[] { });
+    }
+
+    private long[] GetPermutations(long[] input)
+    {
+      var dictionary = new Dictionary<long, long>();
+      for(var x=0;x<input.Length;x++)
+      {
+        if(dictionary.ContainsKey(input[x])==false)
+        {
+          dictionary.Add(input[x],1);
+        }
+        else
+        {
+          dictionary[input[x]] = dictionary[input[x]]+1;
+        }
+      }
+      var minvalue = long.MaxValue;
+      var key = -1;
+      foreach (var counter in dictionary)
+      {
+        if(counter.Value<minvalue)
+        {
+          minvalue = counter.Value;
+        }
+      }
+      return dictionary.Where(x => x.Value == minvalue).Select(x => x.Key).ToArray();
+    }
+  }
+
   public class AllPermutationsOfString
   {
     [Fact]
