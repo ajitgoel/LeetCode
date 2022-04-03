@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Comment CommentText="Queues dictionary stores queueid as key, queuestate as value which has subscribercount, last message, list of subscribers.&#xD;&#xA;Subscribers dictionary stores SubscriberHandle as key and SubscriberState(queueName, last message) as value. &#xD;&#xA;&#xD;&#xA;When a message is posted then you &#xD;&#xA;a. get the queuestate.LastMessage from queues dictionary, &#xD;&#xA;b. set the lastmessage.Next to the new message, &#xD;&#xA;c. for each subscriber in queuestate.subscribers, set the subscriber.lastmessage to the new message. &#xD;&#xA;&#xD;&#xA;&#xD;&#xA;">
+    <Position X="7.604" Y="1.99" Height="2.687" Width="6.96" />
+  </Comment>
+  <Class Name="MessageQueue.Message">
+    <Position X="3.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>OneZero\IMessageQueueManager-Dzmitry.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MessageQueue.QueueState">
+    <Position X="3.5" Y="5.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>OneZero\IMessageQueueManager-Dzmitry.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MessageQueue.SubscriberState">
+    <Position X="3.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>OneZero\IMessageQueueManager-Dzmitry.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MessageQueue.MessageQueueManager_Dzmitry" BaseTypeListCollapsed="true">
+    <Position X="5.25" Y="2" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAcIAAAAAAAAAAIAAAAAAAAAAQCAAAAI=</HashCode>
+      <FileName>OneZero\IMessageQueueManager-Dzmitry.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
