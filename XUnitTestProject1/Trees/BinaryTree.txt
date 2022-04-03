@@ -1,0 +1,4 @@
+﻿Binary Tree has 
+a. at most 2 children per node
+b. exactly 1 root
+c. exactly 1 path between root and any node.

@@ -1,8 +1,9 @@
 ﻿using Xunit;
 using FluentAssertions;
 using System.Collections.Generic;
+using XUnitTestProject1;
 
-namespace XUnitTestProject1
+namespace BinaryTree.Amazon
 {
   public class BranchSums
   {
@@ -22,18 +23,13 @@ namespace XUnitTestProject1
       root.Left.Left.Right = new Node<int>(9);
       root.Left.Right.Left = new Node<int>(10);
       var result = GetBranchSums(root);
-      //Result array should contain 15,16,18,10,11
-      result.Should().Contain(15);
-      result.Should().Contain(16);
-      result.Should().Contain(18);
-      result.Should().Contain(10);
-      result.Should().Contain(11);
+      result.Should().Contain(new int[] { 15, 16, 18, 10, 11 });
     }
     //O(N): Time complexity, O(N): Space Complexity
     /*              1
-     *          2       3
-     *      4     5   6   7
-     *     8  9 10
+     *          2        3
+     *      4      5   6   7
+     *    8   9 10
      */ 
     public int[] GetBranchSums(Node<int> input)
     {
