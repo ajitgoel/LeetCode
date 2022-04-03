@@ -5,7 +5,7 @@ using XUnitTestProject1;
 
 namespace BinaryTree.Amazon
 {
-  public class BranchSums
+  public class EachBranchSum
   {
     [Fact]
     public void Test()
@@ -34,10 +34,10 @@ namespace BinaryTree.Amazon
     public int[] GetBranchSums(Node<int> input)
     {
       var result = new List<int>();
-      CalculateBranchSums(input, 0, result);
+      Calculate(input, 0, result);
       return result.ToArray();
     }
-    void CalculateBranchSums(Node<int> input, int runningSum, List<int> sums)
+    void Calculate(Node<int> input, int runningSum, List<int> sums)
     {
       if (input == null)
       {  
@@ -49,8 +49,8 @@ namespace BinaryTree.Amazon
         sums.Add(newRunningSum);
         return;
       }
-      CalculateBranchSums(input.Left, newRunningSum,sums);
-      CalculateBranchSums(input.Right, newRunningSum, sums);
+      Calculate(input.Left, newRunningSum,sums);
+      Calculate(input.Right, newRunningSum, sums);
     }
   }
 }
