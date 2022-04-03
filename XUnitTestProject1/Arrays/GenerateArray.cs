@@ -6,7 +6,7 @@ using System.Text;
 using System.Linq;
 using Newtonsoft.Json;
 
-namespace Oracle
+namespace Array_Oracle
 {
   public class GenerateArray
   {

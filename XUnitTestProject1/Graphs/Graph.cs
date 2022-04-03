@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Xunit;
 using FluentAssertions;
+using System.Linq;
 
 namespace XUnitTestProject1.Graphs
 {
@@ -52,6 +53,17 @@ namespace XUnitTestProject1.Graphs
     public Graph()
     {
       AdjacencyList = new List<Node>();
+    }
+    public string[] Neighbours(string node)
+    {
+      return AdjacencyList.Where(x => x.Name == node).SelectMany(x => x.Edges).ToArray();
+    }
+    public void AddNodes(string[] newNodes)
+    {
+      foreach (var item in newNodes)
+      {
+        AddNode(item);
+      }
     }
     public bool AddNode(string newNode)
     {
