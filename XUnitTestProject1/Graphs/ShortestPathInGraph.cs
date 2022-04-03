@@ -4,7 +4,7 @@ using FluentAssertions;
 
 namespace XUnitTestProject1.Graphs
 {
-  public class ShortestPath
+  public class ShortestPathInGraph
   {
     //BFS: explore all directions evenly from a node
     //DFS: look in one possible direction before I have to switch directions
@@ -76,12 +76,9 @@ namespace XUnitTestProject1.Graphs
       graph.AddAnEdge("r", "s");
       Calculate(graph, "m", "s").Should().Be(6);
     }
-
     /*Write a function, shortestPath, that takes in an array of edges for an undirected graph and two nodes (nodeA, nodeB). 
      * The function should return the length of the shortest path between A and B. 
-     * Consider the length as the number of edges in the path, not the number of nodes. If there is no path between A and B, then return -1.
-     * 
-    */
+     * Consider the length as the number of edges in the path, not the number of nodes. If there is no path between A and B, then return -1.*/
     public int Calculate(Graph graph, string nodefrom, string nodeto)
     {
       var visitedNodes = new HashSet<string>();
