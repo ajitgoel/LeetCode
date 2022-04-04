@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace CommerceHub
 {
-  public sealed class WordWrapper
+  public class WordWrapperWithoutYield
   {
     public static List<string> WrapWords(string sourceString, int maximumCharactersPerLine)
     {
@@ -44,55 +44,126 @@ namespace CommerceHub
       }
       return result;
     }
-  }
-  public class Runner
-  {
-    public sealed class WordWrapperTests
+    [Fact]
+    public void IfMaximumCharacterWidthIsSmallerThanLongestWordThenAnExceptionShouldBeThrown()
     {
-      [Fact]
-      public void IfMaximumCharacterWidthIsSmallerThanLongestWordThenAnExceptionShouldBeThrown()
+      var result = () => WrapWords("Git ", 1).ToList();
+      result.Should().Throw<InvalidOperationException>().WithMessage("The maximum character width should never be less than the longest word");
+    }
+    [Fact]
+    public void NonEmptySouceStringShouldReturnCorrectList_Test2()
+    {
+      List<string> expected1 = new List<string>() { "Git" };
+      var result1 = WrapWords("Git ", 20);
+      foreach (var counter in expected1)
       {
-        var result = ()=> WordWrapper.WrapWords("Git ", 1);
-        result.Should().Throw<InvalidOperationException>().WithMessage("The maximum character width should never be less than the longest word");        
+        result1.Should().Contain(counter);
       }
-      [Fact]
-      public void NonEmptySouceStringShouldReturnCorrectList_Test2()
+      List<string> expected2 = new List<string>() { "Git" };
+      var result2 = WrapWords("Git ", 3);
+      foreach (var counter in expected2)
       {
-        List<string> expected1 = new List<string>() { "Git" };
-        List<string> result1 = WordWrapper.WrapWords("Git ", 20);
-        foreach (var counter in expected1)
+        result2.Should().Contain(counter);
+      }
+    }
+    [Fact]
+    public void EmptySouceStringShouldReturnEmptyList()
+    {
+      var result1 = WrapWords("", 20);
+      result1.Should().BeEmpty();
+      var result2 = WrapWords(" ", 20);
+      result2.Should().BeEmpty();
+    }
+    [Fact]
+    public void NonEmptySouceStringShouldReturnCorrectList_Test1()
+    {
+      var sourceString = "Git is best thought of as a tool for storing the history of a collection of files. It stores the history as a compressed collection of interrelated snapshots of the project’s contents. In Git each such version is called a commit.";
+      var maximumCharactersPerLine = 20;
+      var expected = new List<string>(){ "Git is best thought","of as a tool for","storing the history","of a collection of","files. It stores the","history as a",
+        "compressed","collection of","interrelated","snapshots of the","project’s contents.","In Git each such","version is called a","commit."};
+      var result = WrapWords(sourceString, maximumCharactersPerLine).ToList();
+      result.Count.Should().Be(expected.Count);
+      foreach (var counter in expected)
+      {
+        result.Should().Contain(counter);
+      }
+    }
+  }
+  public class WordWrapperUsingYield
+  {
+    public static IEnumerable<string> WrapWords(string sourceString, int maximumCharactersPerLine)
+    {
+      if (string.IsNullOrWhiteSpace(sourceString))
+      {
+        yield break;
+      }
+      sourceString = sourceString?.Trim();
+      var character = ' ';
+      var words = sourceString.Split(character);
+      var maxLengthOfWord = words.Max(x => x.Length);
+      if (maxLengthOfWord > maximumCharactersPerLine)
+      {
+        throw new InvalidOperationException("The maximum character width should never be less than the longest word");
+      }
+      var line = words.First();
+      var remainingWords = words.Skip(1);
+      foreach (var word in remainingWords)
+      {
+        var temp = $"{line}{character}{word}";
+        if (maximumCharactersPerLine < temp.Length)
         {
-          result1.Should().Contain(counter);
+          yield return line;
+          line = word;
         }
-        List<string> expected2 = new List<string>() { "Git" };
-        List<string> result2 = WordWrapper.WrapWords("Git ", 3);
-        foreach (var counter in expected2)
+        else
         {
-          result2.Should().Contain(counter);
+          line = temp;
         }
       }
-      [Fact]
-      public void EmptySouceStringShouldReturnEmptyList()
+      yield return line;
+    }
+    [Fact]
+    public void IfMaximumCharacterWidthIsSmallerThanLongestWordThenAnExceptionShouldBeThrown()
+    {
+      var result = ()=> WrapWords("Git ", 1).ToList();
+      result.Should().Throw<InvalidOperationException>().WithMessage("The maximum character width should never be less than the longest word");        
+    }
+    [Fact]
+    public void NonEmptySouceStringShouldReturnCorrectList_Test2()
+    {
+      List<string> expected1 = new List<string>() { "Git" };
+      var result1 = WrapWords("Git ", 20);
+      foreach (var counter in expected1)
       {
-        List<string> result1 = WordWrapper.WrapWords("", 20);
-        result1.Should().BeEmpty();
-        List<string> result2 = WordWrapper.WrapWords(" ", 20);
-        result2.Should().BeEmpty();
+        result1.Should().Contain(counter);
       }
-
-      [Fact]
-      public void NonEmptySouceStringShouldReturnCorrectList_Test1()
+      List<string> expected2 = new List<string>() { "Git" };
+      var result2 = WrapWords("Git ", 3);
+      foreach (var counter in expected2)
       {
-        var sourceString = "Git is best thought of as a tool for storing the history of a collection of files. It stores the history as a compressed collection of interrelated snapshots of the project’s contents. In Git each such version is called a commit.";
-        var maximumCharactersPerLine = 20;
-        var expected = new List<string>(){ "Git is best thought","of as a tool for","storing the history","of a collection of","files. It stores the","history as a",
-          "compressed","collection of","interrelated","snapshots of the","project’s contents.","In Git each such","version is called a","commit."};
-        var result = WordWrapper.WrapWords(sourceString, maximumCharactersPerLine);
-        result.Count.Should().Be(expected.Count);
-        foreach (var counter in expected)
-        {
-          result.Should().Contain(counter);
-        }
+        result2.Should().Contain(counter);
+      }
+    }
+    [Fact]
+    public void EmptySouceStringShouldReturnEmptyList()
+    {
+      var result1 = WrapWords("", 20);
+      result1.Should().BeEmpty();
+      var result2 = WrapWords(" ", 20);
+      result2.Should().BeEmpty();
+    }
+    [Fact]
+    public void NonEmptySouceStringShouldReturnCorrectList_Test1()
+    {
+      var sourceString = "Git is best thought of as a tool for storing the history of a collection of files. It stores the history as a compressed collection of interrelated snapshots of the project’s contents. In Git each such version is called a commit.";
+      var maximumCharactersPerLine = 20;
+      var expected = new List<string>(){ "Git is best thought","of as a tool for","storing the history","of a collection of","files. It stores the","history as a",
+        "compressed","collection of","interrelated","snapshots of the","project’s contents.","In Git each such","version is called a","commit."};
+      var result = WrapWords(sourceString, maximumCharactersPerLine).ToList();
+      result.Count.Should().Be(expected.Count);
+      foreach (var counter in expected)
+      {
+        result.Should().Contain(counter);
       }
     }
   }
