@@ -23,38 +23,55 @@ Given a string and a rotation factor, return an encrypted string.*/
     public void Test1()
     {
       rotationalCipher("a9?", 3).Should().Be("d2?");
-      rotationalCipher("Zebra-493?", 3).Should().Be("Cheud-726?");
+      rotationalCipher("Zebra-493?", 3).Should().Be("Cheud-726?");//Does not work
       rotationalCipher("abcdefghijklmNOPQRSTUVWXYZ0123456789",39).Should().
-        Be("nopqrstuvwxyzABCDEFGHIJKLM9012345678");
+        Be("nopqrstuvwxyzABCDEFGHIJKLM9012345678");//Does not work.
     }
     public string rotationalCipher(string input, int rotationFactor)
     {
-      var result = string.Empty;
+      char[] buffer = input.ToCharArray();
       for (var counter = 0; counter < input.Length; counter++)
       {
-        var inputatcounter=input[counter];
-        if(char.IsNumber(inputatcounter))
+        var letter = input[counter];
+        if(char.IsNumber(letter))
         {
           //0=>3,7=>10=>0, 9=>12=>2
-          var valueafterrotation = Convert.ToInt32(inputatcounter) + rotationFactor;
-          if(valueafterrotation>=10)
+          letter = (char)(letter + rotationFactor);
+          if (letter > '9')
           {
-            valueafterrotation -= 10;
+            letter = (char)(letter - 10);
           }
-          result += valueafterrotation;
+          buffer[counter] = letter;
         }
-        else if(char.IsLetter(inputatcounter))
+        else if(char.IsLetter(letter))
         {
-          char d=char.IsUpper(inputatcounter) ? 'A' : 'a';
-          char temp=(char)((((inputatcounter + rotationFactor)-d)%26)+d);
-          result += temp;
-        }
-        else
-        {
-          result += inputatcounter;
+          letter = (char)(letter + rotationFactor);
+          if(char.IsUpper(letter)==false)
+          {
+            if (letter > 'z' )
+            {
+              letter = (char)(letter - 26);
+            }
+            else if (letter < 'a')
+            {
+              letter = (char)(letter + 26);
+            }
+          }
+          else
+          {
+            if (letter > 'Z')
+            {
+              letter = (char)(letter - 26);
+            }
+            else if (letter < 'A')
+            {
+              letter = (char)(letter + 26);
+            }
+          }          
+          buffer[counter] = letter;
         }
       }
-      return result;
+      return new string(buffer);
     }
   }
 }
