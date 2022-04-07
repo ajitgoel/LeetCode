@@ -5,8 +5,8 @@ using System.Linq;
 
 namespace XUnitTestProject1
 {
-  /*A child is running up a staircase with n steps, and can hop either 1 step, 2 steps, or 3 steps at a time. Implement a method to count how many possible ways the child
-can run up the stairs*/
+  /*A child is running up a staircase with n steps, and can hop either 1 step, 2 steps, or 3 steps at a time. 
+   * Implement a method to count how many possible ways the child can run up the stairs*/
   public class NoOfWaysChildCanRunUpStairsWith1Or2Or3Steps
   {
     [Fact]
@@ -17,9 +17,10 @@ can run up the stairs*/
     [Fact]
     public void Test2()
     {
-      var map=new long[38];
+      var input = 37;
+      var map=new long[input+1];
       Array.Fill(map, -1);
-      countWaysUsingRecursionDynamicProgramming(37, map).Should().Be(3831006429L);
+      countWaysUsingRecursionDynamicProgramming(input, map).Should().Be(3831006429L);
     }
     public long countWaysUsingRecursion(int n)
     {
@@ -47,7 +48,8 @@ can run up the stairs*/
       {
         return map[n];
       }
-      map[n]= countWaysUsingRecursionDynamicProgramming(n - 1, map) + countWaysUsingRecursionDynamicProgramming(n - 2, map) + 
+      map[n]= countWaysUsingRecursionDynamicProgramming(n - 1, map) + 
+        countWaysUsingRecursionDynamicProgramming(n - 2, map) + 
         countWaysUsingRecursionDynamicProgramming(n - 3, map);
       return map[n];
     }

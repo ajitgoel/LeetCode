@@ -1,4 +1,5 @@
 using Xunit;
+using System;
 using System.Collections.Generic;
 
 namespace XUnitTestProject1
@@ -27,14 +28,12 @@ Brute Force: Time: O(3^n), Space: O(n), Memoized: Time: O(n), Space: O(n)*/
     }
     public int Get(int input)
     {
-      return Get(input, new Dictionary<int, int>());
+      var cache=new int[input+1];
+      Array.Fill(cache ,- 1);
+      return Get(input, cache);
     }      
-    private int Get(int input, Dictionary<int, int> cache)
+    private int Get(int input, int[] cache)
     {
-      if(cache.ContainsKey(input))
-      {
-        return cache[input];
-      }
       if(input==0  || input == 1)
       {
         return 0;
@@ -42,6 +41,10 @@ Brute Force: Time: O(3^n), Space: O(n), Memoized: Time: O(n), Space: O(n)*/
       if (input == 2)
       {
         return 1;
+      }
+      if (cache[input] > -1)
+      {
+        return cache[input];
       }
       //Tribonacci value is sum of three values before it.
       var output = Get(input-1,cache) + Get(input-2, cache)+ Get(input - 3, cache);

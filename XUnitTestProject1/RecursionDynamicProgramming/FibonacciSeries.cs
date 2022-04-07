@@ -1,5 +1,6 @@
 using Xunit;
 using System.Collections.Generic;
+using System;
 
 namespace XUnitTestProject1
 {
@@ -21,19 +22,21 @@ namespace XUnitTestProject1
     }
     public int Get(int input)
     {
-      return Get(input, new Dictionary<int, int>());
+      var cache = new int[input+1];
+      Array.Fill(cache, -1);
+      return Get(input, cache);
     }      
-    private int Get(int input, Dictionary<int, int> cache)
+    private int Get(int input, int[] cache)
     {
-      if(cache.ContainsKey(input))
-      {
-        return cache[input];
-      }
       if(input==0  || input == 1)
       {
         return input;
       }
-      var output= Get(input-1,cache) + Get(input-2, cache);
+      if (cache[input] > -1)
+      {
+        return cache[input];
+      }
+      var output = Get(input-1,cache) + Get(input-2, cache);
       cache[input]=output;
       return output;
     }
