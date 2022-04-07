@@ -2,7 +2,9 @@ using Xunit;
 using System.Collections.Generic;
 
 namespace XUnitTestProject1
-{  
+{
+  /*The next number is found by adding up the two numbers before it. 0, 1, 1, 2, 3, 5, 8, 13, 21, 34
+  Brute Force: Time: O(2^n), Space: O(n), Memoized: Time: O(n), Space: O(n)*/
   public class FibonacciSeries
   {
     [Fact]
@@ -19,22 +21,20 @@ namespace XUnitTestProject1
     }
     public int Get(int input)
     {
-      return Get2(input, new List<int>());
+      return Get(input, new Dictionary<int, int>());
     }      
-    /*The next number is found by adding up the two numbers before it.
-    * 0, 1, 1, 2, 3, 5, 8, 13, 21, 34*/
-    private int Get2(int input, List<int> cache)
+    private int Get(int input, Dictionary<int, int> cache)
     {
-      if(cache.Exists(x=>x==input))
+      if(cache.ContainsKey(input))
       {
-        return input;
+        return cache[input];
       }
       if(input==0  || input == 1)
       {
         return input;
       }
-      var output= Get2(input-1,cache) + Get2(input-2, cache);
-      cache.Add(output);
+      var output= Get(input-1,cache) + Get(input-2, cache);
+      cache[input]=output;
       return output;
     }
   }
