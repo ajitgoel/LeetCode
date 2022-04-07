@@ -21,7 +21,7 @@ namespace CommerceHub
       var maxLengthOfWord = words.Max(x => x.Length);
       if (maxLengthOfWord > maximumCharactersPerLine)
       {
-        throw new InvalidOperationException("The maximum character width should never be less than the longest word");
+        throw new ArgumentException("The maximum character width should never be less than the longest word");
       }
       var line = words.First();
       var remainingWords = words.Skip(1);

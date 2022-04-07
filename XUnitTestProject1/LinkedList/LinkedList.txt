@@ -1,0 +1,3 @@
+Head, Tail in linkedlist. Tail has next node as null.
+O(1) when inserting element in linkedlist versus 
+O(N) when inserting element in array
