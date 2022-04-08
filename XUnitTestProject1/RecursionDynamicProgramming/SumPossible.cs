@@ -1,11 +1,15 @@
 ﻿using Xunit;
 using System;
 using FluentAssertions;
+using System.Collections.Generic;
 
 namespace RecursionDynamicProgramming
 {
-  /*Write a function sumPossible that takes in an amount and an array of positive numbers. 
-   * The function should return a boolean indicating whether or not it is possible to create the amount by summing numbers of the array. You may reuse numbers of the array as many times as necessary.
+  /*https://structy.net/problems/sum-possible
+  Write a function sumPossible that takes in an amount and an array of positive numbers. 
+  The function should return a boolean indicating whether or not it is possible to 
+  create the amount by summing numbers of the array. 
+  You may reuse numbers of the array as many times as necessary.
   You may assume that the target amount is non-negative.*/
   public class SumPossible
   {
@@ -20,15 +24,15 @@ namespace RecursionDynamicProgramming
       Get(12, new int[]{ 12}).Should().Be(true);
       Get(0, new int[] { }).Should().Be(true);
       Get(13, new int[] { 3, 5 }).Should().Be(true);
-      //Get(271, new int[] { 10, 8, 265, 24 }).Should().Be(false);
-      //Get(2017, new int[] { 4, 2, 10 }).Should().Be(false);
+      Get(271, new int[] { 10, 8, 265, 24 }).Should().Be(false);
+      Get(2017, new int[] { 4, 2, 10 }).Should().Be(false);
     }
     public bool Get(int amount, int[] numbers)
     {
-      var cache = new bool[amount + 1];
+      var cache = new Dictionary<int,bool>();
       return Get(amount, numbers, cache);
     }
-    private bool Get(int amount, int[] numbers, bool[] cache)
+    private bool Get(int amount, int[] numbers, Dictionary<int, bool> cache)
     {
       if (amount <0)
       {
@@ -38,15 +42,15 @@ namespace RecursionDynamicProgramming
       {
         return true;
       }
-      if (Array.IndexOf(cache, amount) > -1)
+      if (cache.ContainsKey(amount))
       {
         return cache[amount];
       }
       System.Diagnostics.Debug.Print($"{amount} {System.Text.Json.JsonSerializer.Serialize(numbers)} " +
         $"{System.Text.Json.JsonSerializer.Serialize(cache)}");
-      for (int i = 0; i < numbers.Length; i++)
+      foreach (var number in numbers)
       {
-        if(Get(amount - numbers[i], numbers, cache))
+        if(Get(amount - number, numbers, cache))
         {
           cache[amount] = true;
           return true;
