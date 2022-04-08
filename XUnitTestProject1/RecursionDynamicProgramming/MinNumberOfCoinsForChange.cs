@@ -38,6 +38,7 @@ namespace RecursionDynamicProgramming
       var minNoOfCoins = int.MaxValue/2;
       foreach (var coin in coins)
       {
+        //adding 1 to add edge to the minimum number of coins
         var result=1+Calculate(amount-coin, coins, cache);
         minNoOfCoins=Math.Min(minNoOfCoins, result);
       }
