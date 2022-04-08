@@ -10,6 +10,7 @@ namespace RecursionDynamicProgramming
    * You may use each coin as many times as necessary.If it is not possible to create the amount, then return -1.
    Brute Force: Time Complexity: O(c to the power of a), Space Complexity: O(a) where c is the no of coins and a is the amount
    Brute Force with memoization: Time Complexity: O(c*a), Space Complexity: O(a) where c is the no of coins and a is the amount
+  C is the width of the graph and a is the depth of the graph tree. 
    */
   public class MinNumberOfCoinsForChange
   {
@@ -43,6 +44,7 @@ namespace RecursionDynamicProgramming
       cache[amount] = minNoOfCoins;
       return minNoOfCoins;
     }
+
     [Fact]
     public void Test()
     {
