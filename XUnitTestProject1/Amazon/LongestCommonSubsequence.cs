@@ -1,6 +1,5 @@
 using Xunit;
 using System;
-using System.Collections.Generic;
 using FluentAssertions;
 
 namespace Amazon
@@ -27,22 +26,22 @@ Solution 2: https://leetcode.com/problems/longest-common-subsequence/discuss/598
 
       CalculateUsingDynamicProgramming("abcde", "ace").Should().Be(3);
       CalculateUsingDynamicProgramming("abc", "abc").Should().Be(3);
-      CalculateUsingDynamicProgramming("abc", "def").Should().Be(0);      
+      CalculateUsingDynamicProgramming("abc", "def").Should().Be(0);
     }
     public int Calculate(string input1, string input2)
     {
       int startindex = 0;
-      int length = 0;
+      int longestCommonSubsequenceLength = 0;
       foreach (var element2 in input2.ToCharArray())
       {
         var index=input1.IndexOf(element2, startindex);
         if (index >= 0)
         {
           startindex++;
-          length++;
+          longestCommonSubsequenceLength++;
         }
       }
-      return length;
+      return longestCommonSubsequenceLength;
     }
 
     public int CalculateUsingDynamicProgramming(string input1, string input2)
