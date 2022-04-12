@@ -26,14 +26,38 @@ namespace Amazon
   {
     public double Latitude { get; set; }
     public double Longitude { get; set; }
+    public static bool operator ==(Location b1, Location b2)
+    {
+      if ((object)b1 == null)
+      {  
+        return (object)b2 == null;
+      }
+      return b1.Equals(b2);
+    }
+    public static bool operator !=(Location b1, Location b2)
+    {
+      return !(b1 == b2);
+    }
+    public override bool Equals(object obj)
+    {
+      if (obj == null || GetType() != obj.GetType())
+      {
+        return false;
+      }
+      var b2 = (Location)obj;
+      return (System.Math.Abs(Longitude - b2.Longitude) < double.Epsilon &&
+        System.Math.Abs(Latitude - b2.Latitude) < double.Epsilon);
+    }
+    public override int GetHashCode()
+    {
+      return Latitude.GetHashCode() ^ Latitude.GetHashCode();
+    }
   }
   public class NoOfTimesIntersectionWasCrossedBetweenStartAndEndTimes
   {
     public int CalculateFrequency(long startTime, long endTime, Location location, List<Crossing> crossings)
     {
-      return crossings.Count(x => x.Time >= startTime && x.Time <= endTime &&
-        System.Math.Abs(x.Location.Longitude - location.Longitude) < double.Epsilon && 
-        System.Math.Abs(x.Location.Latitude - location.Latitude) < double.Epsilon); 
+      return crossings.Count(x => x.Time >= startTime && x.Time <= endTime && x.Location==location); 
     }    
     [Fact]
     public void Test2()
