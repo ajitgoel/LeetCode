@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Xunit;
 using FluentAssertions;
+using System.Linq;
 
 namespace Amazon
 {
@@ -26,9 +27,9 @@ namespace Amazon
       {
         return parentNode;
       }
-      foreach (var child  in parentNode.Children)
+      foreach (var child in parentNode.Children)
       {
-        var actualChild=FindNode(child, value);
+        var actualChild = FindNode(child, value);
         if (actualChild != null)
         {
           return actualChild;
@@ -38,15 +39,26 @@ namespace Amazon
     }
     public int NoOfNodesUnderANode(NonBinaryTreeNode<string> parentNode, string value)
     {
-      var nodeWithValue= FindNode(parentNode, value);
+      var nodeWithValue = FindNode(parentNode, value);
       if (nodeWithValue == null)
       {
         return -1;
       }
       var runningSum = 0;
+      var stack = new Stack<NonBinaryTreeNode<string>>();
       foreach (var child in nodeWithValue.Children)
       {
-        runningSum = runningSum + 1+ NoOfNodesUnderANode(child, child.Value);
+        stack.Push(child);
+        runningSum++;
+        while (stack.Count > 0)
+        {
+          var currentNode = stack.Pop();
+          foreach (var currentNodeChild in currentNode.Children)
+          {
+            stack.Push(currentNodeChild);
+            runningSum++;
+          }
+        }
       }
       return runningSum;
     }
@@ -56,16 +68,16 @@ namespace Amazon
     David       Faith
     */
     [Fact]
-    public void Test1()
+    public void Test2()
     {
       #region set up tree
       var alice = new NonBinaryTreeNode<string>("Alice");
       var bob = new NonBinaryTreeNode<string>("Bob");
       var erin = new NonBinaryTreeNode<string>("Erin");
-      var chuck= new NonBinaryTreeNode<string>("Chuck");
-      var david= new NonBinaryTreeNode<string>("David");
-      var faith= new NonBinaryTreeNode<string>("Faith");
-      
+      var chuck = new NonBinaryTreeNode<string>("Chuck");
+      var david = new NonBinaryTreeNode<string>("David");
+      var faith = new NonBinaryTreeNode<string>("Faith");
+
       alice.AddChild(bob);
       alice.AddChild(erin);
       bob.AddChild(chuck);
@@ -73,9 +85,9 @@ namespace Amazon
       chuck.AddChild(faith);
       #endregion
 
-      NoOfNodesUnderANode(alice,"Alice").Should().Be(5);
-      NoOfNodesUnderANode(alice,"Bob").Should().Be(3);
-      NoOfNodesUnderANode(alice,"David").Should().Be(0);
+      NoOfNodesUnderANode(alice, "Alice").Should().Be(5);
+      NoOfNodesUnderANode(alice, "Bob").Should().Be(3);
+      NoOfNodesUnderANode(alice, "David").Should().Be(0);
       NoOfNodesUnderANode(alice, "Champa").Should().Be(-1);
     }
   }
