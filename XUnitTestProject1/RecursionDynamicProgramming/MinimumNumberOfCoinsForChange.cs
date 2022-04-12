@@ -9,10 +9,10 @@ namespace RecursionDynamicProgramming
    * The function should return the minimum number of coins required to create the amount. 
    * You may use each coin as many times as necessary.If it is not possible to create the amount, then return -1.
    Brute Force: Time Complexity: O(c to the power of a), Space Complexity: O(a) where c is the no of coins and a is the amount
-   Brute Force with memoization: Time Complexity: O(c*a), Space Complexity: O(a) where c is the no of coins and a is the amount
+   Brute Force with memonization: Time Complexity: O(c*a), Space Complexity: O(a) where c is the no of coins and a is the amount
   C is the width of the graph and a is the depth of the graph tree. 
    */
-  public class MinNumberOfCoinsForChange
+  public class MinimumNumberOfCoinsForChange
   {
     public int Calculate(int amount, int[] coins)
     {

@@ -25,50 +25,82 @@ n == height.length
     [Fact]
     public void Test()
     {
+      GetUsingBruteForceAndNestedLoops(new[] { 0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1 }).Should().Be(6);
+      GetUsingBruteForceAndNestedLoops(new[] { 4, 2, 0, 3, 2, 5 }).Should().Be(9);
+
       Get(new[] { 0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1 }).Should().Be(6);
       Get(new[] { 4, 2, 0, 3, 2, 5 }).Should().Be(9);
       GetOptimised(new [] { 0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1 }).Should().Be(6);
       GetOptimised(new [] { 4, 2, 0, 3, 2, 5 }).Should().Be(9);
     }
+    /*https://www.enjoyalgorithms.com/blog/trapping-rain-water
+    Time Complexity: O(n*n)| space compexility: O(1)*/
+    int GetUsingBruteForceAndNestedLoops(int[] height)
+    {
+      var n = height.Length;
+      if (n <= 2)
+      {
+        return 0;
+      }
+      int trappedWater = 0;
+      for (int i = 0; i < n; i = i + 1)
+      {
+        int leftMaxHeight = 0, rightMaxHeight = 0;
+        for (int k = i; k >= 0; k = k - 1)
+        {
+          leftMaxHeight = Math.Max(height[k], leftMaxHeight);
+        }
+        for (int j = i; j < n; j = j + 1)
+        {
+          rightMaxHeight = Math.Max(height[j], rightMaxHeight);
+        }
+        trappedWater = trappedWater + Math.Min(leftMaxHeight, rightMaxHeight) - height[i];
+      }
+      return trappedWater;
+    }
     /*https://leetcode.com/problems/trapping-rain-water/discuss/17391/Share-my-short-solution.
     Start check from both side, move the point where wall is lower
     (becuase taller wall may leak water in the other lower side)
     leftmax and rightmax are used to record walls, 
-    if the land is lower then the wall means that it can 
-    hold water
+    if the land is lower then the wall means that it can hold water
     if the wall found taller than the max height wall in the other side, stop there
-    (because taller wall may leak water in the other lower side).
-    then move the lower side point
+    (because taller wall may leak water in the other lower side). then move the lower side point
+    heights: 2,0,1,0,3=>
+    leftindex   0 1 2 3 4
+    rightindex  4
+    leftmax     2
+    rightmax    3
+    water       0 2 3 5 5
      */
-    public int GetOptimised(int[] height)
+    int GetOptimised(int[] heights)
     {
       int water = 0;
-      if (height.Length < 3)
+      if (heights.Length < 3)
       {
         return water;
       }
-      int leftmax = height[0];
-      int rightmax = height[height.Length-1];
+      int leftmax = heights[0];
+      int rightmax = heights[heights.Length-1];
       int leftindex = 1;
-      int rightindex = height.Length - 2;
+      int rightindex = heights.Length - 2;
       while(leftindex<=rightindex)
       {
         if(leftmax<=rightmax)
         {
-          leftmax = Math.Max(leftmax, height[leftindex]);
-          water= water+leftmax-height[leftindex];
+          leftmax = Math.Max(leftmax, heights[leftindex]);
+          water= water+leftmax- heights[leftindex];
           leftindex++;
         }
         else
         {
-          rightmax = Math.Max(rightmax, height[rightindex]);
-          water = water + rightmax - height[rightindex];
+          rightmax = Math.Max(rightmax, heights[rightindex]);
+          water = water + rightmax - heights[rightindex];
           rightindex--;
         }
       }
       return water;
     }
-    public int Get(int[] arr)
+    int Get(int[] arr)
     {
       int n = arr.Length;
       // left[i] contains height of tallest bar to theleft of i'th bar including itself
