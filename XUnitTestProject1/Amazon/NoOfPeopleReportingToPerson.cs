@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Xunit;
 using FluentAssertions;
-using System.Linq;
 
 namespace Amazon
 {
@@ -25,10 +24,7 @@ namespace Amazon
     {
       this.Children.Add(value);
     }
-  }
-  public class NonBinaryTreeNodeTest
-  {
-    public NonBinaryTreeNode<string> FindNode(NonBinaryTreeNode<string> parentNode, string value)
+    public static NonBinaryTreeNode<T> FindNode(NonBinaryTreeNode<T> parentNode, T value)
     {
       if (parentNode.Value == value)
       {
@@ -44,7 +40,7 @@ namespace Amazon
       }
       return null;
     }
-    public int NoOfNodesUnderANode(NonBinaryTreeNode<string> parentNode, string value)
+    public static int NoOfNodesUnderANode(NonBinaryTreeNode<T> parentNode, T value)
     {
       var nodeWithValue = FindNode(parentNode, value);
       if (nodeWithValue == null)
@@ -52,7 +48,7 @@ namespace Amazon
         return -1;
       }
       var runningSum = 0;
-      var stack = new Stack<NonBinaryTreeNode<string>>();
+      var stack = new Stack<NonBinaryTreeNode<T>>();
       foreach (var child in nodeWithValue.Children)
       {
         stack.Push(child);
@@ -69,6 +65,9 @@ namespace Amazon
       }
       return runningSum;
     }
+  }
+  public class NonBinaryTreeNodeTest
+  {    
     /*                Alice
                   Bob       Erin
           Chuck
@@ -92,10 +91,10 @@ namespace Amazon
       chuck.AddChild(faith);
       #endregion
 
-      NoOfNodesUnderANode(alice, "Alice").Should().Be(5);
-      NoOfNodesUnderANode(alice, "Bob").Should().Be(3);
-      NoOfNodesUnderANode(alice, "David").Should().Be(0);
-      NoOfNodesUnderANode(alice, "Champa").Should().Be(-1);
+      NonBinaryTreeNode<string>.NoOfNodesUnderANode(alice, "Alice").Should().Be(5);
+      NonBinaryTreeNode<string>.NoOfNodesUnderANode(alice, "Bob").Should().Be(3);
+      NonBinaryTreeNode<string>.NoOfNodesUnderANode(alice, "David").Should().Be(0);
+      NonBinaryTreeNode<string>.NoOfNodesUnderANode(alice, "Champa").Should().Be(-1);
     }
   }
 }
