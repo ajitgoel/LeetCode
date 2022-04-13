@@ -14,6 +14,13 @@ namespace Amazon
     }
     public T Value { get; }
     public List<NonBinaryTreeNode<T>> Children { get; private set; }
+    public void AddChildren(List<NonBinaryTreeNode<T>> values)
+    {
+      foreach (var value in values)
+      {
+        AddChild(value);
+      }
+    }
     public void AddChild(NonBinaryTreeNode<T> value)
     {
       this.Children.Add(value);
