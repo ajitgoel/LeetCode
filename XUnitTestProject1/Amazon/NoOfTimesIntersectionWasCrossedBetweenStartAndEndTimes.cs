@@ -45,8 +45,7 @@ namespace Amazon
         return false;
       }
       var b2 = (Location)obj;
-      return (System.Math.Abs(Longitude - b2.Longitude) < double.Epsilon &&
-        System.Math.Abs(Latitude - b2.Latitude) < double.Epsilon);
+      return (System.Math.Abs(Longitude - b2.Longitude) < double.Epsilon && System.Math.Abs(Latitude - b2.Latitude) < double.Epsilon);
     }
     public override int GetHashCode()
     {
