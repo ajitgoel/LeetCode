@@ -18,6 +18,8 @@ namespace Amazon
    * around 100 nanometers. Since double will win from the perspective of performance and memory, 
    * I see no reason to even consider using decimal.
    
+    int=>32 bit signed integer
+    long=> 64 bit signed integer
     float=> 32 bites=> 4 bytes
     double=>64 bites=> 8 bytes
     double.Epsilon=> Represents the smallest positive System.Double value that is greater than zero.
@@ -54,9 +56,12 @@ namespace Amazon
   }
   public class NoOfTimesIntersectionWasCrossedBetweenStartAndEndTimes
   {
+    /*Algorithm notes. Binary search hones in on values in sorted collections—but its usefulness is often limited. 
+     * Binary search has O(log n) complexity, making it more efficient than linear search which has a time complexity of O(N).
+     https://www.dotnetperls.com/binarysearch.i.webp*/
     public int CalculateFrequency(long startTime, long endTime, Location location, List<Crossing> crossings)
     {
-      return crossings.Count(x => x.Time >= startTime && x.Time <= endTime && x.Location==location); 
+      return crossings.Where((item, index) => item.Time >= startTime && item.Time <= endTime && item.Location == location).Count();
     }    
     [Fact]
     public void Test2()
