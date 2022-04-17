@@ -12,22 +12,32 @@ namespace Namely
     [Fact]
     public void Test()
     {
-      var input = new List<List<int>>
+      //var input1 = new List<List<int>>
+      //{
+      //  new List<int> { 8, 10},
+      //  new List<int> { 15, 18},
+      //  new List<int> { 1, 3},
+      //  new List<int> { 2, 6},
+      //  new List<int> { 4, 5},
+      //  new List<int> { 7, 8},
+      //};
+      //var result1 = new List<List<int>>
+      //{
+      //  new List<int> { 1, 6 },
+      //  new List<int> { 7, 10 },
+      //  new List<int> { 15, 18 }
+      //};
+      //merge_overlapping_intervals(input1).Should().Contain(result1);
+
+      var input2 = new List<List<int>>
       {
-        new List<int> { 8, 10},
-        new List<int> { 15, 18},
-        new List<int> { 1, 3},
-        new List<int> { 2, 6},
-        new List<int> { 4, 5},
-        new List<int> { 7, 8},
+        new List<int> {1,3}, new List<int> {4,6},new List<int> {5,9}, new List<int> {10,12}
       };
-      var result = new List<List<int>>
+      var result2 = new List<List<int>>
       {
-        new List<int> { 1, 6 },
-        new List<int> { 7, 10 },
-        new List<int> { 15, 18 }
+        new List<int> {1,3},new List<int>{4,9}, new List<int>{10,12}
       };
-      merge_overlapping_intervals(input).Should().Contain(result);
+      Calculate(input2).Should().Contain(result2);
     }
     public static List<List<int>> merge_overlapping_intervals(List<List<int>> intervals)
     {
@@ -50,6 +60,40 @@ namespace Namely
         }
       }
       return results;
+    }
+
+    /*https://www.educative.io/edpresso/what-is-the-merge-overlapping-intervals-problem
+    Sort the given list of time intervals in ascending order of starting time.
+    Then, push the first time interval in the stack and compare the next interval with the one in the stack.
+    If it’s overlapping, then merge them into one interval; otherwise, push it in the stack.
+    In the end, the intervals left in the stack will be mutually exclusive.
+    Time complexity: take O(nLog n) time because we have to sort n intervals making it nlogn time complexity.
+    {1,3}{4,6},{5,9}, {10,12} => {1,3},{4,9}, {10,12}
+     */
+    public static List<List<int>> Calculate(List<List<int>> intervals)
+    {
+      intervals=intervals.OrderBy(x => x[0]).ToList();
+      var stack = new Stack<List<int>>();
+      stack.Push(intervals[0]);
+      for (int counter= 1; counter < intervals.Count; counter++)
+      {
+        var intervalInStack=stack.Peek();
+        if(intervalInStack[1]> intervals[counter][0])
+        {
+          stack.Pop();
+          stack.Push(new List<int> { intervalInStack[0], intervals[counter][1] });
+        }
+        else
+        {
+          stack.Push(intervals[counter]);
+        }
+      }
+      var result = new List<List<int>>();
+      for (int counter = 0; counter < stack.Count(); counter++)
+      {
+        result.Add(stack.Pop());
+      }
+      return result;              
     }
   }
 }
