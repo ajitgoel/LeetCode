@@ -10,7 +10,35 @@ namespace Namely
   public class MergeOverlappingIntervals
   {
     [Fact]
-    public void Test()
+    public void Test1()
+    {
+      var input1 = new List<List<int>>
+      {
+        new List<int> { 1, 3},
+        new List<int> { 2, 6},
+        new List<int> { 4, 5},
+        new List<int> { 7, 8},
+        new List<int> { 8, 10},
+        new List<int> { 15, 18},
+        };
+      var result1 = new List<List<int>>
+      {
+        new List<int> { 1, 6 },new List<int> { 7, 10 },new List<int> { 15, 18 }
+      };
+      Calculate(input1).Should().BeEquivalentTo(result1);
+
+      var input2 = new List<List<int>>
+      {
+        new List<int> {1,3}, new List<int> {4,6},new List<int> {5,9}, new List<int> {10,12}
+      };
+      var expectedResult2 = new List<List<int>>
+      {
+        new List<int> {1,3},new List<int>{4,9}, new List<int>{10,12}
+      };
+      Calculate(input2).Should().BeEquivalentTo(expectedResult2);
+    }
+    [Fact]
+    public void Test2()
     {
       //var input1 = new List<List<int>>
       //{
@@ -27,17 +55,17 @@ namespace Namely
       //  new List<int> { 7, 10 },
       //  new List<int> { 15, 18 }
       //};
-      //merge_overlapping_intervals(input1).Should().Contain(result1);
+      //merge_overlapping_intervals(input1).Should().BeEquivalentTo(result1);
 
       var input2 = new List<List<int>>
       {
         new List<int> {1,3}, new List<int> {4,6},new List<int> {5,9}, new List<int> {10,12}
       };
-      var result2 = new List<List<int>>
+      var expectedResult2 = new List<List<int>>
       {
         new List<int> {1,3},new List<int>{4,9}, new List<int>{10,12}
       };
-      Calculate(input2).Should().Contain(result2);
+      merge_overlapping_intervals(input2).Should().BeEquivalentTo(expectedResult2);
     }
     public static List<List<int>> merge_overlapping_intervals(List<List<int>> intervals)
     {
@@ -68,28 +96,27 @@ namespace Namely
     If it’s overlapping, then merge them into one interval; otherwise, push it in the stack.
     In the end, the intervals left in the stack will be mutually exclusive.
     Time complexity: take O(nLog n) time because we have to sort n intervals making it nlogn time complexity.
-    {1,3}{4,6},{5,9}, {10,12} => {1,3},{4,9}, {10,12}
-     */
+    {1,3}{4,6},{5,9}, {10,12} => {1,3},{4,9}, {10,12}*/
     public static List<List<int>> Calculate(List<List<int>> intervals)
     {
       intervals=intervals.OrderBy(x => x[0]).ToList();
+      var result = new List<List<int>>();
       var stack = new Stack<List<int>>();
       stack.Push(intervals[0]);
       for (int counter= 1; counter < intervals.Count; counter++)
       {
         var intervalInStack=stack.Peek();
-        if(intervalInStack[1]> intervals[counter][0])
+        if(intervalInStack[1]>intervals[counter][0])
         {
           stack.Pop();
-          stack.Push(new List<int> { intervalInStack[0], intervals[counter][1] });
+          stack.Push(new List<int> {intervalInStack[0], intervals[counter][1] });
         }
         else
         {
           stack.Push(intervals[counter]);
         }
       }
-      var result = new List<List<int>>();
-      for (int counter = 0; counter < stack.Count(); counter++)
+      while(stack.Count>0)
       {
         result.Add(stack.Pop());
       }
