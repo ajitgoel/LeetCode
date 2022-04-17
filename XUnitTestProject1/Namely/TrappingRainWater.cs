@@ -34,7 +34,7 @@ n == height.length
       GetOptimised(new [] { 4, 2, 0, 3, 2, 5 }).Should().Be(9);
     }
     /*https://www.enjoyalgorithms.com/blog/trapping-rain-water
-    Time Complexity: O(n*n)| space compexility: O(1)*/
+    Time Complexity: O(n*n)| space Complexity : O(1)*/
     int GetUsingBruteForceAndNestedLoops(int[] height)
     {
       var n = height.Length;
@@ -103,7 +103,7 @@ n == height.length
     int Get(int[] arr)
     {
       int n = arr.Length;
-      // left[i] contains height of tallest bar to theleft of i'th bar including itself
+      // left[i] contains height of tallest bar to the left of i'th bar including itself
       int[] left = new int[n];
       // Right [i] contains height of tallest bar to the right of ith bar including itself
       int[] right = new int[n];     
